@@ -49,11 +49,8 @@ class VAE_Encoder(nn.Sequential):
         for name, module in self.named_children():
             if getattr(module, 'stride', None) == (2, 2):
                 # (padding_left, padding_right, padding_top, padding_bottom)
-                # print(name, x.shape, 'before pad')
                 x = F.pad(x, (0, 1, 0, 1))
-                # print(name, x.shape, 'after pad')
             x = module(x)
-            # print(name, x.shape, 'after module')
         # (Batch_size, 8, Width/8, Height/8) -> (Batch_size, 4, Width/8, Height/8), (Batch_size, 4, Width/8, Height/8)
         mean, log_variance = torch.chunk(x, 2, dim = 1)
         # (Batch_size, 4, Width/8, Height/8) -> (Batch_size, 4, Width/8, Height/8)
@@ -63,7 +60,6 @@ class VAE_Encoder(nn.Sequential):
         # (Batch_size, 4, Width/8, Height/8) -> (Batch_size, 4, Width/8, Height/8)
         stdev = variance.sqrt()
         # (Batch_size, 4, Width/8, Height/8) -> (Batch_size, 4, Width/8, Height/8)
-        # print(mean.shape, stdev.shape, noise.shape)
         x = mean + stdev * noise
         x *= 0.18215
         return x, mean, stdev

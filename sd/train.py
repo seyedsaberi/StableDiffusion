@@ -29,9 +29,7 @@ class VAE_Trainer():
         
         for batch in dataloader:
             x = batch['image'].to(self.device)
-            n, c, h, w = x.shape
-            print(n, c, h, w, "images size")
-            
+            n, c, h, w = x.shape            
             # noise: (Batch_size, 4, Width/8, Height/8)
             noise = torch.randn(n, 4, h//8, w//8).to(self.device)
             # Forward pass
