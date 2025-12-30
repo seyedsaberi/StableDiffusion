@@ -30,8 +30,10 @@ class VAE_Trainer():
         self.encoder.train()
         self.decoder.train()
         total_loss = 0
-        
-        for batch in dataloader:
+        print(f"Number of batches: {len(dataloader)}")
+        for index, batch in enumerate(dataloader):
+            if index % 10 == 0:
+                print(f"{Index} Batches from total {len(dataloader)} passed.")
             x = batch['image'].to(self.device)
             n, c, h, w = x.shape            
             # noise: (Batch_size, 4, Width/8, Height/8)
