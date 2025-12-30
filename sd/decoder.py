@@ -55,7 +55,7 @@ class VAE_Decoder(nn.Sequential):
     def __init__(self):
         super().__init__(
             # (Batch_size, 4, width/8, height/8) -> (Batch_size, 4, width/8, height/8)
-            nn.conv2d(4, ,4 , kernel_size = 1, padding = 0),
+            nn.conv2d(4, 4, kernel_size = 1, padding = 0),
             # (Batch_size, 4, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
             nn.conv2d(4, 512, kernel_size = 3, padding = 1),
             # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
