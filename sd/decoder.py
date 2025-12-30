@@ -54,26 +54,16 @@ class VAE_ResidualBlock(nn.Module):
 class VAE_Decoder(nn.Sequential):
     def __init__(self):
         super().__init__(
-            # (Batch_size, 4, width/8, height/8) -> (Batch_size, 4, width/8, height/8)
+            # (Batch_size, 4, width/4, height/4) -> (Batch_size, 4, width/4, height/4)
             nn.Conv2d(4, 4, kernel_size = 1, padding = 0),
-            # (Batch_size, 4, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
+            # (Batch_size, 4, width/4, height/4) -> (Batch_size, 512, width/4, height/4)
             nn.Conv2d(4, 512, kernel_size = 3, padding = 1),
-            # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
+            # (Batch_size, 512, width/4, height/4) -> (Batch_size, 512, width/4, height/4)
             VAE_ResidualBlock(512, 512),
-            # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
+            # (Batch_size, 512, width/4, height/4) -> (Batch_size, 512, width/4, height/4)
             VAE_AttentionBlock(512),
-            # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
+            # (Batch_size, 512, width/4, height/4) -> (Batch_size, 512, width/4, height/4)
             VAE_ResidualBlock(512, 512),
-            # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
-            VAE_ResidualBlock(512, 512),
-            # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
-            VAE_ResidualBlock(512, 512),
-            # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
-            VAE_ResidualBlock(512, 512),
-            # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/4, height/4)
-            nn.Upsample(scale_factor = 2),
-            # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
-            nn.Conv2d(512, 512, kernel_size = 3, padding = 1),
             # (Batch_size, 512, width/4, height/4) -> (Batch_size, 512, width/4, height/4)
             VAE_ResidualBlock(512, 512),
             # (Batch_size, 512, width/4, height/4) -> (Batch_size, 512, width/4, height/4)
@@ -108,7 +98,7 @@ class VAE_Decoder(nn.Sequential):
             nn.Conv2d(128, 3, kernel_size = 3, padding = 1),
         )
     def forward(self, x : torch.Tensor) -> torch.Tensor:
-        # x: (Batch_size, 4, width/8, height/8)
+        # x: (Batch_size, 4, width/4, height/4)
         x /= 0.18215
         for module in self:
             x = module(x)

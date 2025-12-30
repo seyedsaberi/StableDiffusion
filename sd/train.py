@@ -33,11 +33,11 @@ class VAE_Trainer():
         print(f"Number of batches: {len(dataloader)}")
         for index, batch in enumerate(dataloader):
             if index % 10 == 0:
-                print(f"{index} Batches from total {len(dataloader)} passed.")
+                print(f"{index} Batches from total {len(dataloader)} Batches has been processed.")
             x = batch['image'].to(self.device)
             n, c, h, w = x.shape            
-            # noise: (Batch_size, 4, Width/8, Height/8)
-            noise = torch.randn(n, 4, h//8, w//8).to(self.device)
+            # noise: (Batch_size, 4, Width/8, Height/8) for large decoder | noise: (Batch_size, 4, Width/4, Height/4)
+            noise = torch.randn(n, 4, h//4, w//4).to(self.device)
             # Forward pass
             z, mean, stdev = self.encoder(x, noise)
             x_hat = self.decoder(z)
@@ -67,7 +67,8 @@ class VAE_Trainer():
         for batch in dataloader:
             x = batch['image'].to(self.device)
             n, c, h, w = x.shape
-            noise = torch.randn(n, 4, h//8, w//8).to(self.device)
+            # noise: (Batch_size, 4, Width/8, Height/8) for large decoder | noise: (Batch_size, 4, Width/4, Height/4)
+            noise = torch.randn(n, 4, h//4, w//4).to(self.device)
 
             z, mean, stdev = self.encoder(x, noise)
             x_hat = self.decoder(z)
