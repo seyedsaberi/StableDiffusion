@@ -32,13 +32,13 @@ class VAE_ResidualBlock(nn.Module):
     def __init__(self, in_channels, out_channels):
         super().__init__()
         self.group_norm_1 = nn.GroupNorm(32, in_channels)
-        self.conv_1 = nn.conv2d(in_channels, out_channels, kernel_size = 3, padding = 1)
+        self.conv_1 = nn.Conv2d(in_channels, out_channels, kernel_size = 3, padding = 1)
         self.group_norm_2 = nn.GroupNorm(32, out_channels)
-        self.conv_2 = nn.conv2d(out_channels, out_channels, kernel_size = 3, padding = 1)
+        self.conv_2 = nn.Conv2d(out_channels, out_channels, kernel_size = 3, padding = 1)
         if in_channels == out_channels:
             self.residual_layer = nn.Identity()
         else:
-            self.residual_layer = nn.conv2d(in_channels, out_channels, kernel_size = 1, padding = 0)
+            self.residual_layer = nn.Conv2d(in_channels, out_channels, kernel_size = 1, padding = 0)
     def forward(self, x : torch.Tensor) -> torch.Tensor:
         # x: (Batch_size, in_channels, Width, Height)
         residue = x
@@ -55,9 +55,9 @@ class VAE_Decoder(nn.Sequential):
     def __init__(self):
         super().__init__(
             # (Batch_size, 4, width/8, height/8) -> (Batch_size, 4, width/8, height/8)
-            nn.conv2d(4, 4, kernel_size = 1, padding = 0),
+            nn.Conv2d(4, 4, kernel_size = 1, padding = 0),
             # (Batch_size, 4, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
-            nn.conv2d(4, 512, kernel_size = 3, padding = 1),
+            nn.Conv2d(4, 512, kernel_size = 3, padding = 1),
             # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
             VAE_ResidualBlock(512, 512),
             # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
@@ -73,7 +73,7 @@ class VAE_Decoder(nn.Sequential):
             # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/4, height/4)
             nn.Upsample(scale_factor = 2),
             # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
-            nn.conv2d(512, 512, kernel_size = 3, padding = 1),
+            nn.Conv2d(512, 512, kernel_size = 3, padding = 1),
             # (Batch_size, 512, width/4, height/4) -> (Batch_size, 512, width/4, height/4)
             VAE_ResidualBlock(512, 512),
             # (Batch_size, 512, width/4, height/4) -> (Batch_size, 512, width/4, height/4)
@@ -83,7 +83,7 @@ class VAE_Decoder(nn.Sequential):
             # (Batch_size, 512, width/4, height/4) -> (Batch_size, 512, width/2, height/2)
             nn.Upsample(scale_factor = 2),
             #(Batch_size, 512, width/2, height/2) -> (Batch_size, 512, width/2, height/2)
-            nn.conv2d(512, 512, kernel_size = 3, padding = 1),
+            nn.Conv2d(512, 512, kernel_size = 3, padding = 1),
             # (Batch_size, 512, width/2, height/2) -> (Batch_size, 256, width/2, height/2)
             VAE_ResidualBlock(512, 256),
             # (Batch_size, 256, width/2, height/2) -> (Batch_size, 256, width/2, height/2)
@@ -93,7 +93,7 @@ class VAE_Decoder(nn.Sequential):
             # (Batch_size, 256, width/2, height/2) -> (Batch_size, 256, width, height)
             nn.Upsample(scale_factor = 2),
             # (Batch_size, 256, width, height) -> (Batch_size, 256, width, height)
-            nn.conv2d(256, 256, kernel_size = 3, padding = 1),
+            nn.Conv2d(256, 256, kernel_size = 3, padding = 1),
             # (Batch_size, 256, width, height) -> (Batch_size, 128, width, height)
             VAE_ResidualBlock(256, 128),
             # (Batch_size, 128, width, height) -> (Batch_size, 128, width, height)
@@ -105,7 +105,7 @@ class VAE_Decoder(nn.Sequential):
             # (Batch_size, 128, width, height) -> (Batch_size, 128, width, height)
             nn.SiLU(),
             # (Batch_size, 128, width, height) -> (Batch_size, 3, width, height)
-            nn.conv2d(128, 3, kernel_size = 3, padding = 1),
+            nn.Conv2d(128, 3, kernel_size = 3, padding = 1),
         )
     def forward(self, x : torch.Tensor) -> torch.Tensor:
         # x: (Batch_size, 4, width/8, height/8)
