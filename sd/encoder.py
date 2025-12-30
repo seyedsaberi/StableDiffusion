@@ -47,8 +47,8 @@ class VAE_Encoder(nn.Sequential):
         # x: (Batch_size, Channel, Width, Height)
         # noise: (Batch_size, out_channels, Width, Height)
         for name, module in self.named_children():
-            if getattr(module, 'stride', None) == (2, 2):
-                # (padding_left, padding_right, padding_top, padding_bottom)
+            # if getattr(module, 'stride', None) == (2, 2):
+                # # (padding_left, padding_right, padding_top, padding_bottom)
                 # F.pad(x, (0, 1, 0, 1))
             x = module(x)
             print(name, x.shape)
