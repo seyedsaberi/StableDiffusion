@@ -19,7 +19,7 @@ class CelebADataset(Dataset):
         """
         self.root_dir = root_dir
         self.transform = transforms.Compose([
-            transforms.Resize((512, 512)),
+            transforms.Resize((32, 32)),
             transforms.ToTensor(),
         ])
         # List all image files in the directory
