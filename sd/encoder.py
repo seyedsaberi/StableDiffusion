@@ -60,7 +60,7 @@ class VAE_Encoder(nn.Sequential):
         # (Batch_size, 4, Width/8, Height/8) -> (Batch_size, 4, Width/8, Height/8)
         stdev = variance.sqrt()
         # (Batch_size, 4, Width/8, Height/8) -> (Batch_size, 4, Width/8, Height/8)
-        # print(mean.shape, stdev.shape, noise.shape)
+        print(mean.shape, stdev.shape, noise.shape)
         x = mean + stdev * noise
         x *= 0.18215
         return x, mean, stdev
