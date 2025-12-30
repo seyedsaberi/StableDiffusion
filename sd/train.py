@@ -9,7 +9,7 @@ from torch import nn
 from torch.utils.data import DataLoader # Recommended over raw Dataset
 
 def parameter_count(model):
-    return sum(p.numel for p in model.parameters() if p.requires_grad)
+    return sum(p.numel() for p in model.parameters() if p.requires_grad)
 
 
 class VAE_Trainer():
