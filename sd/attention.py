@@ -14,7 +14,7 @@ class SelfAttention(nn.Module):
         self.n_heads = n_heads
         self.out_layer = nn.Linear(d_embed, d_embed, bias = out_proj_bias)
 
-    def forward(self, x : torch.Tensor, causal_mask: False) -> torch.Tensor:
+    def forward(self, x : torch.Tensor, causal_mask = False) -> torch.Tensor:
         # x: (Batch_size, Length, d_embed)
         n, T, C = x.shape
         residue = x
