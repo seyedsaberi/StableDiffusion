@@ -76,9 +76,13 @@ class VAE_Trainer():
         return total_loss / len(dataloader)
 
     def train(self, train_loader, val_loader, epochs: int):
+        best_val_loss = float('inf')
         for epoch in range(epochs):
             train_loss = self.train_epoch(train_loader)
             val_loss = self.evaluate(val_loader)
+            if val_loss < best_val_loss:
+                best_val_loss = val_loss
+                self.save_model('models/best_models/')
             print(f"Epoch {epoch+1:02d} | Train: {train_loss:.4f} | Val: {val_loss:.4f}")
 
     @torch.no_grad()

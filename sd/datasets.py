@@ -6,6 +6,8 @@ import os
 from PIL import Image
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
+import numpy as np
+import mathplotlib.pyplot as plt 
 
 class CelebADataset(Dataset):
     def __init__(self, root_dir, transform=None):
@@ -31,3 +33,14 @@ class CelebADataset(Dataset):
             
         # Returning a dictionary to match your trainer's 'batch['image']' logic
         return {'image': image}
+
+def show_images(images, title = 'Images'):
+    images = images.detach().cpu().numpy()
+    images = np.transpose(images, (0, 2, 3, 1))
+    images = np.clip(images, 0, 1)
+    fig, axes = plt.subplots(1, len(images), figsize = (15, 5))
+    for i, img in enumerate(images):
+        axes[i].imshow(fig)
+        axes[i].axis('off')
+    plt.subtitle('title')
+    plt.show()
