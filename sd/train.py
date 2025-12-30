@@ -8,6 +8,10 @@ import torch
 from torch import nn
 from torch.utils.data import DataLoader # Recommended over raw Dataset
 
+def parameter_count(model):
+    return sum(p.numel for p in model.parameters() if p.requires_grad)
+
+
 class VAE_Trainer():
     def __init__(self, lr=1e-4, sigma=1.0):
         self.encoder = VAE_Encoder()
@@ -76,6 +80,9 @@ class VAE_Trainer():
 
     def train(self, train_loader, val_loader, epochs: int):
         best_val_loss = float('inf')
+        encoder_parameter_count = parameter_count(self.encoder)
+        decoder_parameter_count = parameter_count(self.decoder)
+        print(f"Encoder has {parameter_count(self.encoder)} parameters and decoder has {parameter_count(self.decoder)} parameters. Total number of parameters are equal to {parameter_count(self.decoder) + parameter_count(self.encoder)}")
         for epoch in range(epochs):
             train_loss = self.train_epoch(train_loader)
             val_loss = self.evaluate(val_loader)
