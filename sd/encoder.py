@@ -61,4 +61,4 @@ class VAE_Encoder(nn.Sequential):
         # (Batch_size, 4, Width/8, Height/8) -> (Batch_size, 4, Width/8, Height/8)
         x = mean + stdev * noise
         x *= 0.18215
-        return x
+        return x, mean, stdev
