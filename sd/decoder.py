@@ -75,7 +75,7 @@ class VAE_Decoder(nn.Sequential):
             # (Batch_size, 512, width/8, height/8) -> (Batch_size, 512, width/8, height/8)
             nn.conv2d(512, 512, kernel_size = 3, padding = 1),
             # (Batch_size, 512, width/4, height/4) -> (Batch_size, 512, width/4, height/4)
-            VAE_ResidualBlock(512, 512)
+            VAE_ResidualBlock(512, 512),
             # (Batch_size, 512, width/4, height/4) -> (Batch_size, 512, width/4, height/4)
             VAE_ResidualBlock(512, 512),
             # (Batch_size, 512, width/4, height/4) -> (Batch_size, 512, width/4, height/4)
