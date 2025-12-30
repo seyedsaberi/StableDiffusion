@@ -33,7 +33,7 @@ class VAE_Trainer():
         print(f"Number of batches: {len(dataloader)}")
         for index, batch in enumerate(dataloader):
             if index % 10 == 0:
-                print(f"{Index} Batches from total {len(dataloader)} passed.")
+                print(f"{index} Batches from total {len(dataloader)} passed.")
             x = batch['image'].to(self.device)
             n, c, h, w = x.shape            
             # noise: (Batch_size, 4, Width/8, Height/8)
