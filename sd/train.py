@@ -1,8 +1,8 @@
 import torch
 from torch import nn
 from torch.nn import functional as F
-from encoder import VAE_Encoder
-from decoder import VAE_Decoder
+from sd.encoder import VAE_Encoder
+from sd.decoder import VAE_Decoder
 
 import torch
 from torch import nn
