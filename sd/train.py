@@ -32,7 +32,7 @@ class VAE_Trainer():
             n, c, h, w = x.shape
             
             # noise: (Batch_size, 4, Width/8, Height/8)
-            noise = torch.randn(n, 4, h//8, w//8).to(self.device)
+            noise = torch.randn(n, 4, h/8, w/8).to(self.device)
             # Forward pass
             z, mean, stdev = self.encoder(x, noise)
             x_hat = self.decoder(z)
