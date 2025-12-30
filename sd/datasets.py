@@ -9,6 +9,7 @@ from torchvision import transforms
 import numpy as np
 import matplotlib.pyplot as plt 
 
+
 class CelebADataset(Dataset):
     def __init__(self, root_dir, transform=None):
         """
@@ -17,7 +18,10 @@ class CelebADataset(Dataset):
             transform (callable, optional): Optional transform to be applied on a sample.
         """
         self.root_dir = root_dir
-        self.transform = transform
+        self.transform = transforms.Compose([
+            transforms.Resize((512, 512)),
+            transforms.ToTensor(),
+        ])
         # List all image files in the directory
         self.image_files = [f for f in os.listdir(root_dir) if f.endswith('.jpg')]
 
