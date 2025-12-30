@@ -7,7 +7,7 @@ from PIL import Image
 from torch.utils.data import Dataset, DataLoader
 from torchvision import transforms
 import numpy as np
-import mathplotlib.pyplot as plt 
+import matplotlib.pyplot as plt 
 
 class CelebADataset(Dataset):
     def __init__(self, root_dir, transform=None):
