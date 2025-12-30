@@ -7,7 +7,7 @@ class VAE_AttentionBlock(nn.Module):
     def __init__(self, channel):
         super().__init__()
         self.group_norm = nn.GroupNorm(32, channel)
-        self.attention = SelfAttention(channel)
+        self.attention = SelfAttention(1, channel)
     def forward(self, x : torch.Tensor) -> torch.Tensor:
         # x: (Batch_size, channel, Width, Height)
         residue = x
